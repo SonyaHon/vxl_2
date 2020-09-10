@@ -1,4 +1,8 @@
 pub mod input_handler;
+pub mod graphics;
+pub mod utils;
+pub mod resource;
+pub mod esc;
 
 pub struct Engine {
     _sdl: sdl2::Sdl,
