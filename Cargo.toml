@@ -23,3 +23,6 @@ x86_64-pc-windows-msvc = { triplet = "x64-windows-static-md" }
 
 [dependencies.gl]
 git = "https://github.com/bjz/gl-rs"
+
+[dependencies.cgmath]
+version = "0.17.0"

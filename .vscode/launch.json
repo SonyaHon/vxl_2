@@ -5,41 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "lldb",
+            "name": "(Windows) Launch",
+            "type": "cppvsdbg",
             "request": "launch",
-            "name": "Debug executable 'vxl_2'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=vxl_2",
-                    "--package=vxl_2"
-                ],
-                "filter": {
-                    "name": "vxl_2",
-                    "kind": "bin"
-                }
-            },
+            "program": "${workspaceFolder}/target/debug/vxl_2.exe",
             "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'vxl_2'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=vxl_2",
-                    "--package=vxl_2"
-                ],
-                "filter": {
-                    "name": "vxl_2",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false
         }
     ]
 }
