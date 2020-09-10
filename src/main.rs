@@ -9,7 +9,7 @@ fn a_handler() {
 }
 
 fn prepare(engine: &mut engine::Engine) {
-    engine.input_handler.on(sdl2::keyboard::Keycode::A, a_handler);
+    engine.input_handler.on(sdl2::keyboard::Scancode::A, a_handler);
 }
 
 fn game_loop() {}

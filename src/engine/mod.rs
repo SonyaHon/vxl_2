@@ -1,9 +1,9 @@
 pub mod input_handler;
 
 pub struct Engine {
-    sdl: sdl2::Sdl,
-    video_subsystem: sdl2::VideoSubsystem,
-    window: sdl2::video::Window,
+    _sdl: sdl2::Sdl,
+    _video_subsystem: sdl2::VideoSubsystem,
+    _window: sdl2::video::Window,
     pub input_handler: input_handler::InputHandler
 }
 
@@ -20,9 +20,9 @@ impl Engine {
         let event_pump = sdl.event_pump().unwrap();
         
         Ok(Engine {
-            sdl,
-            video_subsystem,
-            window,
+            _sdl: sdl,
+            _video_subsystem: video_subsystem,
+            _window: window,
             input_handler: input_handler::InputHandler::create(event_pump)
         })
     }
