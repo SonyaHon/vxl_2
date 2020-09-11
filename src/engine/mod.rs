@@ -46,7 +46,7 @@ impl Engine {
         self
     }
 
-    pub fn game_loop(&mut self, game_loop: fn()) {
+    pub fn game_loop(&mut self, game_loop: fn(&mut Engine)) {
         'main: loop {
             self.input_handler.game_loop();
 
@@ -63,7 +63,7 @@ impl Engine {
                 gl::Clear(gl::COLOR_BUFFER_BIT);
             }
 
-            game_loop();
+            game_loop(self);
 
             self.window.gl_swap_window();
         }

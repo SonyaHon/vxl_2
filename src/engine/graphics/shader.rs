@@ -1,8 +1,8 @@
 use crate::engine::utils::create_whitespace_csting_with_len;
-use std::ffi::CStr;
+use std::ffi::CString;
 
 pub fn shader_from_source(
-    source: &CStr,
+    source: &CString,
     kind: gl::types::GLenum,
 ) -> Result<gl::types::GLuint, String> {
     let id = unsafe { gl::CreateShader(kind) };
@@ -40,7 +40,7 @@ pub struct Shader {
 }
 
 impl Shader {
-    pub fn new(source: &CStr, kind: gl::types::GLenum) -> Result<Shader, String> {
+    pub fn new(source: &CString, kind: gl::types::GLenum) -> Result<Shader, String> {
         let id = shader_from_source(source, kind)?;
         Ok(Shader { id })
     }

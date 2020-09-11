@@ -1,12 +1,25 @@
-use std::{
-    ffi::CStr,
-    io::Error,
-    path::{Path, PathBuf},
-};
+use std::{fs, path::Path};
+use std::io::{self, Read};
+use std::ffi::CString;
+use std::path::PathBuf;
+
+#[derive(Debug)]
+pub enum Error {
+    Io(io::Error),
+    FileContainsNil,
+    FailedToGetExePath
+}
+
+impl From<io::Error> for Error {
+    fn from(other: io::Error) -> Self {
+        Error::Io(other)
+    }
+}
 
 pub struct Loader {
     root_path: PathBuf,
 }
+
 
 impl Loader {
     pub fn new() -> Loader {
@@ -19,14 +32,16 @@ impl Loader {
         }
     }
 
-    pub fn load_file_as_cstring(&self, asset_path: &str) -> Result<&CString, Error> {
-        let mut file = std::fs::File::open(self.root_path.join(asset_path)).unwrap();
+    pub fn load_file_as_cstring(&self, asset_path: &str) -> Result<CString, Error> {
+        let mut file = fs::File::open(self.root_path.join(Path::new(asset_path)))?;
         let mut buffer: Vec<u8> = Vec::with_capacity(file.metadata()?.len() as usize + 1);
 
+        file.read_to_end(&mut buffer);
+
         if buffer.iter().find(|i| **i == 0).is_some() {
-            return Err(Error);
+            return Err(Error::FileContainsNil);
         }
 
-        Ok(unsafe { ffi::CString::from_vec_unchecked(buffer) })
+        Ok(unsafe { CString::from_vec_unchecked(buffer) })
     }
 }

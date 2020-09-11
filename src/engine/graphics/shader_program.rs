@@ -7,7 +7,7 @@ pub struct ShaderProgram {
 }
 
 impl ShaderProgram {
-    pub fn new(shaders: &[Shader]) -> Result<ShaderProgram, String> {
+    pub fn new(shaders: &Vec<Shader>) -> Result<ShaderProgram, String> {
         let id = unsafe { gl::CreateProgram() };
 
         for shader in shaders {
