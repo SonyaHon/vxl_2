@@ -1,8 +1,8 @@
-pub mod input_handler;
-pub mod graphics;
-pub mod utils;
-pub mod resource;
 pub mod esc;
+pub mod graphics;
+pub mod input_handler;
+pub mod resource;
+pub mod utils;
 
 pub struct Engine {
     _sdl: sdl2::Sdl,
@@ -10,6 +10,8 @@ pub struct Engine {
     window: sdl2::video::Window,
     _gl_context: sdl2::video::GLContext,
     clear_color: cgmath::Vector3<f32>,
+
+    pub resouce_manager: resource::manager::Manager,
     pub input_handler: input_handler::InputHandler,
 }
 
@@ -27,12 +29,14 @@ impl Engine {
         gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void);
         let _gl_context = window.gl_create_context().unwrap();
 
+        let resouce_manager = resource::manager::Manager::new();
         Ok(Engine {
             _sdl: sdl,
             _video_subsystem: video_subsystem,
             _gl_context,
             window,
             clear_color: cgmath::Vector3::new(0.0, 0.0, 0.0),
+            resouce_manager,
             input_handler: input_handler::InputHandler::create(event_pump),
         })
     }

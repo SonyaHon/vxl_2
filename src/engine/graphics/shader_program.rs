@@ -2,12 +2,12 @@ use crate::engine::utils::create_whitespace_csting_with_len;
 
 use super::shader::Shader;
 
-pub struct Program {
+pub struct ShaderProgram {
     id: gl::types::GLuint,
 }
 
-impl Program {
-    pub fn new(shaders: &[Shader]) -> Result<Program, String> {
+impl ShaderProgram {
+    pub fn new(shaders: &[Shader]) -> Result<ShaderProgram, String> {
         let id = unsafe { gl::CreateProgram() };
 
         for shader in shaders {
@@ -43,7 +43,7 @@ impl Program {
             unsafe { gl::DetachShader(id, shader.get_id()) };
         }
 
-        Ok(Program { id })
+        Ok(ShaderProgram { id })
     }
 
     pub fn get_id(&self) -> gl::types::GLuint {
@@ -59,7 +59,7 @@ impl Program {
     }
 }
 
-impl Drop for Program {
+impl Drop for ShaderProgram {
     fn drop(&mut self) {
         unsafe { gl::DeleteProgram(self.id) }
     }

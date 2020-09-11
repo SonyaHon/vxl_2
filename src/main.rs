@@ -1,17 +1,19 @@
+extern crate cgmath;
 extern crate gl;
 extern crate sdl2;
-extern crate cgmath;
 
 mod engine;
 mod game;
 
-fn a_handler() {
-    println!("Hello world");
-}
-
 fn prepare(engine: &mut engine::Engine) {
-    engine.input_handler.on(sdl2::keyboard::Scancode::A, a_handler);
-    engine.set_clear_color( cgmath::Vector3::new(0.2, 0.2, 0.2));
+    engine.set_clear_color(cgmath::Vector3::new(0.2, 0.2, 0.2));
+    engine.resouce_manager.load_shader_program(
+        vec![
+            ("test/triangle_vertex", gl::VERTEX_SHADER),
+            ("test/triangle_fragment", gl::FRAGMENT_SHADER),
+        ],
+        "test_triangle",
+    );
 }
 
 fn game_loop() {}
