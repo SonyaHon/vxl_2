@@ -22,13 +22,13 @@ impl Manager {
         shader_touples: Vec<(&str, gl::types::GLenum)>,
         program_name: &'static str,
     ) {
-        let shader_prefix = Path::new("shaders");
+        let shader_prefix = Path::new("shaders\\");
         let mut shaders: Vec<Shader> = Vec::with_capacity(shader_touples.len());
 
         for touple in shader_touples {
             let shader_source = self
                 .loader
-                .load_file_as_cstring(&shader_prefix.join(Path::new(touple.0)).to_str().unwrap())
+                .load_file_as_cstring(&shader_prefix.join(Path::new((touple.0.to_string() + ".glsl").as_str())).to_str().unwrap())
                 .unwrap();
             let shader = Shader::new(&shader_source, touple.1).unwrap();
             &mut shaders.push(shader);

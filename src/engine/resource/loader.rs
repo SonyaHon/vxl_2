@@ -7,7 +7,6 @@ use std::path::PathBuf;
 pub enum Error {
     Io(io::Error),
     FileContainsNil,
-    FailedToGetExePath
 }
 
 impl From<io::Error> for Error {
@@ -25,7 +24,7 @@ impl Loader {
     pub fn new() -> Loader {
         let path = std::env::current_exe().unwrap();
         let path_parent = path.parent().unwrap();
-        let content_path = path_parent.join("res");
+        let content_path = path_parent.join("res\\");
 
         Loader {
             root_path: content_path,
@@ -36,7 +35,7 @@ impl Loader {
         let mut file = fs::File::open(self.root_path.join(Path::new(asset_path)))?;
         let mut buffer: Vec<u8> = Vec::with_capacity(file.metadata()?.len() as usize + 1);
 
-        file.read_to_end(&mut buffer);
+        file.read_to_end(&mut buffer)?;
 
         if buffer.iter().find(|i| **i == 0).is_some() {
             return Err(Error::FileContainsNil);
