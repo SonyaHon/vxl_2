@@ -1,26 +1,41 @@
 extern crate cgmath;
 extern crate gl;
 extern crate sdl2;
+extern crate specs;
 
-mod engine;
-mod game;
+mod component;
+mod system;
+mod vxl;
 
-const TEST_TRI_SHADER: &str = "test_triangle";
+use specs::prelude::*;
+use vxl::VXL;
 
 fn main() {
-    fn prepare(engine: &mut engine::Engine) {
-        engine.set_clear_color(cgmath::Vector3::new(0.2, 0.2, 0.2));
+    let vxl = VXL::new();
 
-        engine.get_resource_manager().load_shader_program(
-            vec![
-                ("test\\triangle_vertex", gl::VERTEX_SHADER),
-                ("test\\triangle_fragment", gl::FRAGMENT_SHADER),
-            ],
-            TEST_TRI_SHADER,
-        );
+    let mut window = vxl.create_window("VXL", 1280, 720);
+    let mut input = vxl.create_input();
+
+    window.set_clear_color((0.3, 0.3, 0.3));
+
+    let mut world = World::new();
+    let mut dispatcher = DispatcherBuilder::new()
+        .with(system::test::TestSystem, "sys_test", &[])
+        .build();
+
+    dispatcher.setup(&mut world);
+
+    'main: loop {
+        input.update();
+        if input.window_should_close() {
+            break 'main;
+        }
+
+        window.clear();
+
+        dispatcher.dispatch(&mut world);
+        world.maintain();
+
+        window.update();
     }
-    let _engine = engine::Engine::craft(("VXL", 1280, 720))
-        .unwrap()
-        .prepare(prepare)
-        .game_loop();
 }

@@ -1,3 +1,4 @@
+pub mod entity;
 pub mod graphics;
 pub mod input_handler;
 pub mod resource;
@@ -11,6 +12,7 @@ pub struct Engine {
     clear_color: cgmath::Vector3<f32>,
     resouce_manager: resource::manager::Manager,
     input_handler: input_handler::InputHandler,
+    enitities: Vec<Box<dyn entity::Entity>>,
 }
 
 impl Engine {
@@ -30,6 +32,7 @@ impl Engine {
             .unwrap();
 
         let event_pump = sdl.event_pump().unwrap();
+
         let _gl_context = window.gl_create_context().unwrap();
         gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void);
 
@@ -43,11 +46,15 @@ impl Engine {
             clear_color: cgmath::Vector3::new(0.0, 0.0, 0.0),
             resouce_manager: resource::manager::Manager::new(),
             input_handler: input_handler::InputHandler::create(event_pump),
+            enitities: vec![],
         })
     }
 
     pub fn prepare(&mut self, prepare_func: fn(engine: &mut Engine)) -> &mut Engine {
         prepare_func(self);
+
+        self.prepare_entities();
+
         self
     }
 
@@ -68,14 +75,23 @@ impl Engine {
                 gl::Clear(gl::COLOR_BUFFER_BIT);
             }
 
-            // todo add esc system here
-
             self.window.gl_swap_window();
+        }
+    }
+
+    fn prepare_entities(&mut self) {
+        for entity in self.enitities.iter_mut() {
+            // entity.prepare(self);
+            entity.as_mut().prepare(*self)
         }
     }
 
     pub fn set_clear_color(&mut self, new_color: cgmath::Vector3<f32>) {
         self.clear_color = new_color;
+    }
+
+    pub fn spawn_entity(&mut self, entity: Box<dyn entity::Entity>) {
+        self.enitities.push(entity);
     }
 }
 

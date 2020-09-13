@@ -7,6 +7,7 @@ build = "build.rs"
 
 [dependencies]
 rand = "0.7.3"
+cgmath = "0.17.0"
 specs = "0.16.1"
 
 [dependencies.sdl2]
@@ -24,9 +25,6 @@ x86_64-pc-windows-msvc = { triplet = "x64-windows-static-md" }
 
 [dependencies.gl]
 git = "https://github.com/bjz/gl-rs"
-
-[dependencies.cgmath]
-version = "0.17.0"
 
 [build-dependencies]
 walkdir = "2.3.1"
