@@ -58,5 +58,10 @@ impl MeshData {
 }
 
 impl Drop for MeshData {
-    fn drop(&mut self) {}
+    fn drop(&mut self) {
+        unsafe {
+            gl::DeleteVertexArrays(1, vec![self.vao_id].as_ptr());
+            gl::DeleteBuffers(self.vbo_ids.len() as i32, self.vbo_ids.as_ptr());
+        }
+    }
 }

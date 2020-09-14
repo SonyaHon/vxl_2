@@ -23,8 +23,4 @@ impl VXLInput {
     pub fn window_should_close(&self) -> bool {
         self.window_should_close
     }
-
-    // pub fn get_state(&mut self) -> sdl2::keyboard::KeyboardState {
-    //     self.sdl_event_pump.keyboard_state()
-    // }
 }

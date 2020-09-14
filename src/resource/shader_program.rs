@@ -46,10 +46,6 @@ impl ShaderProgram {
         Ok(ShaderProgram { id })
     }
 
-    pub fn get_id(&self) -> gl::types::GLuint {
-        self.id
-    }
-
     pub fn bind(&self) {
         unsafe { gl::UseProgram(self.id) }
     }
