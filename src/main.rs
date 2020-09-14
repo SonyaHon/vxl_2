@@ -4,7 +4,9 @@ extern crate sdl2;
 extern crate specs;
 
 mod component;
+mod resource;
 mod system;
+mod utils;
 mod vxl;
 
 use specs::prelude::*;
@@ -19,9 +21,7 @@ fn main() {
     window.set_clear_color((0.3, 0.3, 0.3));
 
     let mut world = World::new();
-    let mut dispatcher = DispatcherBuilder::new()
-        .with(system::test::TestSystem, "sys_test", &[])
-        .build();
+    let mut dispatcher = DispatcherBuilder::new().build();
 
     dispatcher.setup(&mut world);
 
