@@ -17,7 +17,6 @@ impl VXL {
         gl_attr.set_context_profile(sdl2::video::GLProfile::Core);
         gl_attr.set_context_version(3, 3);
 
-
         VXL {
             sdl,
             video_subsystem,
@@ -33,14 +32,14 @@ impl VXL {
             .build()
             .unwrap();
 
-        sdl_window.gl_create_context().unwrap();
+        let _gl = sdl_window.gl_create_context().unwrap();
         gl::load_with(|s| {
             self.video_subsystem.gl_get_proc_address(s) as *const std::os::raw::c_void
         });
 
         self.set_viewport(0, 0, width as i32, height as i32);
 
-        VXLWindow::new(sdl_window)
+        VXLWindow::new(sdl_window, _gl)
     }
 
     pub fn create_input(&self) -> VXLInput {

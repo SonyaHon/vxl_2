@@ -1,5 +1,3 @@
-use specs::prelude::*;
-
 pub struct VXLInput {
     sdl_event_pump: sdl2::EventPump,
     window_should_close: bool,
@@ -26,7 +24,7 @@ impl VXLInput {
         self.window_should_close
     }
 
-    pub fn get_state(&mut self) -> sdl2::keyboard::KeyboardState {
-        self.sdl_event_pump.keyboard_state()
-    }
+    // pub fn get_state(&mut self) -> sdl2::keyboard::KeyboardState {
+    //     self.sdl_event_pump.keyboard_state()
+    // }
 }

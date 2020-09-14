@@ -1,13 +1,17 @@
+use sdl2::video::GLContext;
+
 pub struct VXLWindow {
     sdl_window: sdl2::video::Window,
     clear_color: (f32, f32, f32),
+    _gl: GLContext,
 }
 
 impl VXLWindow {
-    pub fn new(window: sdl2::video::Window) -> VXLWindow {
+    pub fn new(window: sdl2::video::Window, gl: GLContext) -> VXLWindow {
         VXLWindow {
             sdl_window: window,
             clear_color: (0.2, 0.2, 0.2),
+            _gl: gl,
         }
     }
 
