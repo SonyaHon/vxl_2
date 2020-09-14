@@ -3,7 +3,7 @@ use specs::prelude::*;
 pub struct MeshData {
     vertices: Vec<f32>,
     vao_id: gl::types::GLuint,
-    // vbo_ids: Vec<gl::types::GLuint>,
+    vbo_ids: Vec<gl::types::GLuint>,
 }
 
 impl Component for MeshData {
@@ -23,9 +23,11 @@ impl MeshData {
                 vertices.as_ptr() as *const gl::types::GLvoid,
                 gl::STATIC_DRAW,
             );
+            gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 
             gl::GenVertexArrays(1, &mut vao_id);
             gl::BindVertexArray(vao_id);
+            gl::BindBuffer(gl::ARRAY_BUFFER, vertex_vbo);
             gl::EnableVertexAttribArray(0);
             gl::VertexAttribPointer(
                 0,
@@ -42,7 +44,7 @@ impl MeshData {
         MeshData {
             vertices,
             vao_id,
-            // vbo_ids: vec![vertex_vbo],
+            vbo_ids: vec![vertex_vbo],
         }
     }
 
@@ -51,7 +53,7 @@ impl MeshData {
     }
 
     pub fn get_vertex_count(&self) -> i32 {
-        self.vertices.len() as i32
+        (self.vertices.len() / 3) as i32
     }
 }
 

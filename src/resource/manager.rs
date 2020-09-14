@@ -1,4 +1,4 @@
-use super::{loader, shader_program::ShaderProgram, shader::Shader};
+use super::{loader, shader::Shader, shader_program::ShaderProgram};
 use std::path::Path;
 
 pub struct Manager {
@@ -23,11 +23,14 @@ impl Manager {
         let mut shaders: Vec<Shader> = Vec::with_capacity(shader_touples.len());
 
         for touple in shader_touples {
-
-            println!("{}", &shader_prefix.join(Path::new((touple.0.to_string() + ".glsl").as_str())).to_str().unwrap());
             let shader_source = self
                 .loader
-                .load_file_as_cstring(&shader_prefix.join(Path::new((touple.0.to_string() + ".glsl").as_str())).to_str().unwrap())
+                .load_file_as_cstring(
+                    &shader_prefix
+                        .join(Path::new((touple.0.to_string() + ".glsl").as_str()))
+                        .to_str()
+                        .unwrap(),
+                )
                 .unwrap();
             let shader = Shader::new(&shader_source, touple.1).unwrap();
             &mut shaders.push(shader);
@@ -36,6 +39,8 @@ impl Manager {
         let program = ShaderProgram::new(&shaders).unwrap();
 
         self.loaded_shaders.entry(program_name).or_insert(program);
+
+        println!("Shader \"{}\" loaded: OK", program_name);
     }
 
     pub fn get_shader_program(&self, shader_program_name: &'static str) -> &ShaderProgram {

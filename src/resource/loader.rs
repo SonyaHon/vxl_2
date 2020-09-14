@@ -1,7 +1,7 @@
-use std::{fs, path::Path};
-use std::io::{self, Read};
 use std::ffi::CString;
+use std::io::{self, Read};
 use std::path::PathBuf;
+use std::{fs, path::Path};
 
 #[derive(Debug)]
 pub enum Error {
@@ -19,7 +19,6 @@ pub struct Loader {
     root_path: PathBuf,
 }
 
-
 impl Loader {
     pub fn new() -> Loader {
         let path = std::env::current_exe().unwrap();
@@ -32,7 +31,6 @@ impl Loader {
     }
 
     pub fn load_file_as_cstring(&self, asset_path: &str) -> Result<CString, Error> {
-        println!("{:?}", self.root_path.join(Path::new(asset_path)));
         let mut file = fs::File::open(self.root_path.join(Path::new(asset_path)))?;
         let mut buffer: Vec<u8> = Vec::with_capacity(file.metadata()?.len() as usize + 1);
 
