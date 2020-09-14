@@ -19,17 +19,19 @@ impl<'a> System<'a> for TriangleSys {
         for (mesh_data, _renderer) in (&mesh_data, &renderer).join() {
             unsafe {
                 manager.get_shader_program("tri").bind();
-                gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, mesh_data.get_indices_vbo());
+
                 gl::BindVertexArray(mesh_data.get_vao_id());
-                // gl::DrawArrays(gl::TRIANGLES, 0, mesh_data.get_vertex_count());
+                gl::EnableVertexAttribArray(0);
                 gl::DrawElements(
                     gl::TRIANGLES,
-                    mesh_data.get_vertex_count(),
+                    mesh_data.get_vertex_count() as gl::types::GLsizei,
                     gl::UNSIGNED_INT,
-                    std::ptr::null() as *const gl::types::GLvoid,
+                    std::ptr::null(),
                 );
-                println!("GL ERROR: {}", gl::GetError());
+                gl::DisableVertexAttribArray(0);
                 gl::BindVertexArray(0);
+
+
                 manager.unbind_shader_program();
             }
         }
