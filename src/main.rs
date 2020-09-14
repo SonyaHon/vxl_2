@@ -35,6 +35,21 @@ fn main() {
         .with(Renderer::new())
         .build();
 
+    let mut manager = resource::manager::Manager::new();
+    manager.load_shader_program(
+        vec![
+            ("test\\triangle_vertex", gl::VERTEX_SHADER),
+            ("test\\triangle_fragment", gl::FRAGMENT_SHADER),
+        ],
+        "tri",
+    );
+
+    manager.get_shader_program("tri").bind();
+
+    unsafe {
+        println!("{}", gl::GetError());
+    }
+
     'main: loop {
         input.update();
         if input.window_should_close() {
