@@ -4,12 +4,14 @@ extern crate sdl2;
 extern crate specs;
 
 mod component;
+mod esc_res;
 mod resource;
 mod system;
 mod utils;
 mod vxl;
 
 use component::{mesh_data::MeshData, renderer::Renderer};
+use esc_res::delta_time::DeltaTime;
 use specs::prelude::*;
 use vxl::VXL;
 fn main() {
@@ -17,7 +19,9 @@ fn main() {
     let mut window = vxl.create_window("VXL", 1280, 720);
     let mut input = vxl.create_input();
     let mut manager = resource::manager::Manager::new();
+    let mut clock = vxl.create_clock();
 
+    // SHADER LOADING
     manager.load_shader_program(
         vec![
             ("test/tv", gl::VERTEX_SHADER),
@@ -25,6 +29,7 @@ fn main() {
         ],
         "tri",
     );
+    // SHADER LOADING END
 
     window.set_clear_color((0.3, 0.3, 0.3));
 
@@ -38,9 +43,9 @@ fn main() {
 
     world
         .create_entity()
-        .with(MeshData::from_vertices(vec![
+        .with(MeshData::from_data(vec![
             -0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.0, 0.5, 0.0,
-        ]))
+        ], vec![0, 1, 2]))
         .with(Renderer::new())
         .build();
 
@@ -51,6 +56,8 @@ fn main() {
         if input.window_should_close() {
             break 'main;
         }
+        world.insert(input.get_user_input_res());
+        world.insert(clock.get_delta());
         window.clear();
 
         dispatcher.dispatch(&mut world);

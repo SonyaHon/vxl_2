@@ -1,6 +1,8 @@
+pub mod clock;
 pub mod input;
 pub mod window;
 
+use clock::VXLClock;
 use input::VXLInput;
 use window::VXLWindow;
 pub struct VXL {
@@ -51,5 +53,9 @@ impl VXL {
         unsafe {
             gl::Viewport(x, y, width, height);
         }
+    }
+
+    pub fn create_clock(&self) -> VXLClock {
+        VXLClock::new(self.sdl.timer().unwrap())
     }
 }
