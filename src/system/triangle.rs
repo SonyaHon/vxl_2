@@ -22,6 +22,9 @@ impl<'a> System<'a> for TriangleSys {
 
                 gl::BindVertexArray(mesh_data.get_vao_id());
                 gl::EnableVertexAttribArray(0);
+                gl::EnableVertexAttribArray(1);
+                let tex = manager.get_texture("colors");
+                tex.bind();
                 gl::DrawElements(
                     gl::TRIANGLES,
                     mesh_data.get_vertex_count() as gl::types::GLsizei,
@@ -29,9 +32,10 @@ impl<'a> System<'a> for TriangleSys {
                     std::ptr::null(),
                 );
                 gl::DisableVertexAttribArray(0);
+                gl::DisableVertexAttribArray(1);
                 gl::BindVertexArray(0);
 
-
+                manager.unbind_texture();
                 manager.unbind_shader_program();
             }
         }

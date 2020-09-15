@@ -1,5 +1,6 @@
 extern crate cgmath;
 extern crate gl;
+extern crate image;
 extern crate sdl2;
 extern crate specs;
 
@@ -26,18 +27,12 @@ use vxl::VXL;
 //     println!("GL ERROR {}", message.as_ref().uwrap() as &str);
 // }
 
-
 fn main() {
     let vxl = VXL::new();
     let mut window = vxl.create_window("VXL", 1280, 720);
     let mut input = vxl.create_input();
     let mut manager = resource::manager::Manager::new();
     let mut clock = vxl.create_clock();
-
-    // unsafe {
-    //     gl::Enable(gl::DEBUG_OUTPUT);
-    //     gl::DebugMessageCallback(gl_debug_callback as gl::types::GLDEBUGPROC, std::ptr::null());
-    // }
 
     // SHADER LOADING
     manager.load_shader_program(
@@ -48,6 +43,10 @@ fn main() {
         "tri",
     );
     // SHADER LOADING END
+
+    //TEXTURE LOADING
+    manager.load_texture("colors", "colors");
+    //TEXTURE LOADING END
 
     window.set_clear_color((0.3, 0.3, 0.3));
 
@@ -64,6 +63,7 @@ fn main() {
         .with(MeshData::from_data(
             vec![-0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.0, 0.5, 0.0],
             vec![0, 2, 1],
+            vec![0.0, 0.0, 0.5, 1.0, 1.0, 0.0],
         ))
         .with(Renderer::new())
         .build();
@@ -83,5 +83,9 @@ fn main() {
 
         window.update();
         world.maintain();
+
+        unsafe {
+            println!("GL Error: {}", gl::GetError());
+        }
     }
 }

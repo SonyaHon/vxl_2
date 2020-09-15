@@ -42,4 +42,9 @@ impl Loader {
 
         Ok(unsafe { CString::from_vec_unchecked(buffer) })
     }
+
+    pub fn load_image(&self, asset_path: &str) -> image::DynamicImage {
+        let path = self.root_path.join(Path::new(asset_path));
+        image::open(path).unwrap()
+    }
 }

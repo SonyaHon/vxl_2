@@ -9,6 +9,7 @@ build = "build.rs"
 rand = "0.7.3"
 cgmath = "0.17.0"
 specs = "0.16.1"
+image ="0.23.9"
 
 [dependencies.sdl2]
 version = "0.34"
