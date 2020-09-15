@@ -1,6 +1,7 @@
 use crate::utils::funcs::create_whitespace_csting_with_len;
 
 use super::shader::Shader;
+use cgmath::prelude::*;
 
 pub struct ShaderProgram {
     id: gl::types::GLuint,
@@ -52,6 +53,17 @@ impl ShaderProgram {
 
     pub fn unbind() {
         unsafe { gl::UseProgram(0) }
+    }
+
+    pub fn get_unifrom_location(&self, location_name: String) -> i32 {
+        unsafe { gl::GetUniformLocation(self.id, location_name.as_ptr() as *const i8) }
+    }
+
+    pub fn add_unifrom_matrix4(&self, location_name: String, matrix: cgmath::Matrix4<f32>) {
+        let uniform_location = self.get_unifrom_location(location_name);
+        unsafe {
+            gl::UniformMatrix4fv(uniform_location, 1, gl::FALSE, matrix.as_ptr())
+        }
     }
 }
 

@@ -5,8 +5,12 @@ layout (location = 1) in vec2 UV;
 
 out vec2 color_pos;
 
+uniform mat4 transform_mat;
+uniform mat4 projection_mat;
+uniform mat4 view_mat;
+
 void main()
 {
-    gl_Position = vec4(Position, 1.0);
+    gl_Position = projection_mat * view_mat * transform_mat * vec4(Position, 1.0) ;
     color_pos = UV;
 }

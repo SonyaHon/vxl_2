@@ -11,21 +11,12 @@ mod system;
 mod utils;
 mod vxl;
 
-use component::{mesh_data::MeshData, renderer::Renderer};
+use component::{
+    camera::Camera, camera::MainCamera, mesh_data::MeshData, renderer::Renderer,
+    transform::Transform,
+};
 use specs::prelude::*;
 use vxl::VXL;
-
-// fn gl_debug_callback(
-//     source: gl::types::GLenum,
-//     e_type: gl::types::GLenum,
-//     id: gl::types::GLuint,
-//     severity: gl::types::GLenum,
-//     len: gl::types::GLsizei,
-//     message: *const i8,
-//     user_param: *mut std::ffi::c_void
-// ) {
-//     println!("GL ERROR {}", message.as_ref().uwrap() as &str);
-// }
 
 fn main() {
     let vxl = VXL::new();
@@ -53,7 +44,12 @@ fn main() {
     let mut world = World::new();
     world.register::<MeshData>();
     world.register::<Renderer>();
+    world.register::<Transform>();
+    world.register::<Camera>();
+    world.register::<MainCamera>();
+
     let mut dispatcher = DispatcherBuilder::new()
+        .with(system::cam_control::CamControl, "camera_control", &[])
         .with_thread_local(system::triangle::TriangleSys)
         .build();
     dispatcher.setup(&mut world);
@@ -66,6 +62,22 @@ fn main() {
             vec![0.0, 0.0, 0.5, 1.0, 1.0, 0.0],
         ))
         .with(Renderer::new())
+        .with(Transform::from_data(
+            cgmath::vec3(-1.0, 0.0, 0.0),
+            cgmath::vec3(0.0, 0.0, 0.0),
+            1.0,
+        ))
+        .build();
+
+    world
+        .create_entity()
+        .with(Transform::from_data(
+            cgmath::vec3(0.0, 0.0, 5.0),
+            cgmath::vec3(0.0, 0.0, 0.0),
+            1.0,
+        ))
+        .with(MainCamera {})
+        .with(Camera::new(1.0, 720.0 / 1280.0, 0.001, 1000.0))
         .build();
 
     world.insert(manager);
@@ -84,8 +96,8 @@ fn main() {
         window.update();
         world.maintain();
 
-        unsafe {
-            println!("GL Error: {}", gl::GetError());
-        }
+        // unsafe {
+        //     println!("GL Error: {}", gl::GetError());
+        // }
     }
 }
