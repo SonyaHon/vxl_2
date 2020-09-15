@@ -95,9 +95,5 @@ fn main() {
 
         window.update();
         world.maintain();
-
-        // unsafe {
-        //     println!("GL Error: {}", gl::GetError());
-        // }
     }
 }
