@@ -21,7 +21,7 @@ impl Manager {
         shader_touples: Vec<(&str, gl::types::GLenum)>,
         program_name: &'static str,
     ) {
-        let shader_prefix = Path::new("shaders\\");
+        let shader_prefix = Path::new("shaders/");
         let mut shaders: Vec<Shader> = Vec::with_capacity(shader_touples.len());
 
         for touple in shader_touples {
@@ -46,7 +46,7 @@ impl Manager {
     }
 
     pub fn load_texture(&mut self, asset_name: &str, texture_name: &'static str) {
-        let image_prefix = Path::new("img\\");
+        let image_prefix = Path::new("img/");
         let img = self.loader.load_image(
             image_prefix
                 .join(Path::new((asset_name.to_string() + ".png").as_str()))

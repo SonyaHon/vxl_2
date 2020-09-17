@@ -6,6 +6,7 @@ pub struct Camera {
     aspect: f32,
     near_plane: f32,
     far_plane: f32,
+    projection_matrix: Option<cgmath::Matrix4<f32>>,
 }
 
 impl Component for Camera {
@@ -19,17 +20,26 @@ impl Camera {
             aspect,
             near_plane,
             far_plane,
+            projection_matrix: None,
         }
     }
 
-    pub fn get_projection_matrix(&self) -> cgmath::Matrix4<f32> {
+    pub fn generate_matrix(&mut self) {
         let projection_mat = cgmath::perspective(
-            cgmath::Rad(self.fov),
+            cgmath::Deg(self.fov),
             self.aspect,
             self.near_plane,
             self.far_plane,
         );
-        projection_mat
+        self.projection_matrix = Some(projection_mat);
+    }
+
+    pub fn get_projection_matrix(&mut self) -> cgmath::Matrix4<f32> {
+        if self.projection_matrix.is_none() {
+            self.generate_matrix()
+        }
+
+        self.projection_matrix.unwrap().to_owned()
     }
 }
 
