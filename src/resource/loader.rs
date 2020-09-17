@@ -23,7 +23,7 @@ impl Loader {
     pub fn new() -> Loader {
         let path = std::env::current_exe().unwrap();
         let path_parent = path.parent().unwrap();
-        let content_path = path_parent.join("res\\");
+        let content_path = path_parent.join("res/");
 
         Loader {
             root_path: content_path,

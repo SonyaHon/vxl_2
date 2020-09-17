@@ -15,16 +15,18 @@ impl<'a> System<'a> for TriangleSys {
         ReadStorage<'a, MeshData>,
         ReadStorage<'a, Renderer>,
         ReadStorage<'a, Transform>,
-        ReadStorage<'a, Camera>,
+        WriteStorage<'a, Camera>,
         ReadStorage<'a, MainCamera>,
     );
 
     fn run(
         &mut self,
-        (manager, mesh_data, renderer, transform, camera, main_camera): Self::SystemData,
+        (manager, mesh_data, renderer, transform, mut camera, main_camera): Self::SystemData,
     ) {
-        let (main_cam, main_cam_transform, _) =
-            (&camera, &transform, &main_camera).join().next().unwrap();
+        let (main_cam, main_cam_transform, _) = (&mut camera, &transform, &main_camera)
+            .join()
+            .next()
+            .unwrap();
         let projection_matrix = main_cam.get_projection_matrix();
         let view_matrix = main_cam_transform.get_view_matrix();
 
@@ -53,6 +55,7 @@ impl<'a> System<'a> for TriangleSys {
 
                 manager.unbind_texture();
                 manager.unbind_shader_program();
+                println!("Renderring occured");
             }
         }
     }

@@ -52,6 +52,7 @@ fn main() {
         .with(system::cam_control::CamControl, "camera_control", &[])
         .with_thread_local(system::triangle::TriangleSys)
         .build();
+
     dispatcher.setup(&mut world);
 
     world
@@ -63,7 +64,7 @@ fn main() {
         ))
         .with(Renderer::new())
         .with(Transform::from_data(
-            cgmath::vec3(-1.0, 0.0, 0.0),
+            cgmath::vec3(0.0, 0.0, 0.0),
             cgmath::vec3(0.0, 0.0, 0.0),
             1.0,
         ))
@@ -72,12 +73,12 @@ fn main() {
     world
         .create_entity()
         .with(Transform::from_data(
-            cgmath::vec3(0.0, 0.0, 5.0),
+            cgmath::vec3(0.0, 0.0, 1.0),
             cgmath::vec3(0.0, 0.0, 0.0),
             1.0,
         ))
         .with(MainCamera {})
-        .with(Camera::new(1.0, 720.0 / 1280.0, 0.001, 1000.0))
+        .with(Camera::new(45.0, 720.0 / 1280.0, 0.001, 1000.0))
         .build();
 
     world.insert(manager);
@@ -92,8 +93,8 @@ fn main() {
         window.clear();
 
         dispatcher.dispatch(&mut world);
+        world.maintain();
 
         window.update();
-        world.maintain();
     }
 }

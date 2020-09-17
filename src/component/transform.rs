@@ -39,11 +39,11 @@ impl Transform {
         let mut transform_mat = cgmath::Matrix4::<f32>::identity();
         transform_mat = transform_mat * cgmath::Matrix4::<f32>::from_translation(self.translation);
         transform_mat =
-            transform_mat * cgmath::Matrix4::<f32>::from_angle_x(cgmath::Rad(self.rotation.x));
+            transform_mat * cgmath::Matrix4::<f32>::from_angle_x(cgmath::Deg(self.rotation.x));
         transform_mat =
-            transform_mat * cgmath::Matrix4::<f32>::from_angle_y(cgmath::Rad(self.rotation.y));
+            transform_mat * cgmath::Matrix4::<f32>::from_angle_y(cgmath::Deg(self.rotation.y));
         transform_mat =
-            transform_mat * cgmath::Matrix4::<f32>::from_angle_z(cgmath::Rad(self.rotation.z));
+            transform_mat * cgmath::Matrix4::<f32>::from_angle_z(cgmath::Deg(self.rotation.z));
         transform_mat = transform_mat * cgmath::Matrix4::<f32>::from_scale(self.scale);
 
         transform_mat
@@ -51,9 +51,9 @@ impl Transform {
 
     pub fn get_view_matrix(&self) -> cgmath::Matrix4<f32> {
         let mut view_mat = cgmath::Matrix4::<f32>::identity();
-        view_mat = view_mat * cgmath::Matrix4::<f32>::from_angle_x(cgmath::Rad(self.rotation.x));
-        view_mat = view_mat * cgmath::Matrix4::<f32>::from_angle_x(cgmath::Rad(self.rotation.y));
-        view_mat = view_mat * cgmath::Matrix4::<f32>::from_angle_x(cgmath::Rad(self.rotation.z));
+        view_mat = view_mat * cgmath::Matrix4::<f32>::from_angle_x(cgmath::Deg(self.rotation.x));
+        view_mat = view_mat * cgmath::Matrix4::<f32>::from_angle_y(cgmath::Deg(self.rotation.y));
+        view_mat = view_mat * cgmath::Matrix4::<f32>::from_angle_z(cgmath::Deg(self.rotation.z));
         view_mat = view_mat * cgmath::Matrix4::<f32>::from_translation(self.translation * -1.0);
 
         view_mat
